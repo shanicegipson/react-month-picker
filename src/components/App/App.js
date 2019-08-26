@@ -1,8 +1,34 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import './App.css';
+import MonthList from '../MonthList/MonthList';
+
 
 class App extends Component {
+    
+  state = {
+    monthList: []
+  }
+
+  componentDidMount() {
+    this.getMonth();
+  }
+
+  getMonth() {
+    axios({
+      method: 'GET',
+      url: '/calendar'
+    })
+    .then((response) => {
+      this.setState({
+        monthList: response.data
+      });
+    })
+    .catch((err) => {
+      console.log(`Error in GET: ${err}`)
+    })
+  }
+
   render() {
     return (
       <div className="App">
@@ -12,7 +38,7 @@ class App extends Component {
           <br/>
         </header>
         <br/>
-        <p>List of months goes here</p>
+        <MonthList  MonthList={this.state.monthList}/>
       </div>
     );
   }
